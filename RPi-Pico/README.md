@@ -30,12 +30,14 @@ the multilib mode compiler is both 32bit and 64bit.
 
 ```
 export WOLFSSL_ROOT=/path/to/wolfssl/source
+export WOLFSSL_ROOT=~/bwsi/pico/wolfssl
 ```
 
 ### 2. Setup pico-sdk and set `PICO_SDK_PATH`
 
 ```
 export PICO_SDK_PATH=/path/to/pico-sdk
+export PICO_SDK_PATH=~/pico/pico-sdk 
 ```
 
 ### 3. cmake and make
