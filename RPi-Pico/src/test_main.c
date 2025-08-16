@@ -28,18 +28,21 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 
-int main(int argc, char **argv)
+int main()
 {
-    int i;
     int ret;
 
-    stdio_init_all();
+    stdio_init_all();  
 
     wolfSSL_Init();
 
     ret = wolfcrypt_test(NULL);
 
-    printf("End: %d\n", ret);
+    while (true) {
+        printf("End: %d\n", ret);
+        sleep_ms(1000);
+    }
+
     return ret;
 }
 

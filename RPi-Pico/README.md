@@ -37,7 +37,8 @@ export WOLFSSL_ROOT=~/bwsi/pico/wolfssl
 
 ```
 export PICO_SDK_PATH=/path/to/pico-sdk
-export PICO_SDK_PATH=~/pico/pico-sdk 
+export PICO_SDK_PATH=~/pico/pico-sdk
+export PICO_PLATFORM=rp2350 
 ```
 
 ### 3. cmake and make

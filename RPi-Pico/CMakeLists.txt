@@ -13,9 +13,12 @@ if (EXISTS ${picoVscode})
 endif()
 # ====================================================================================
 set(PICO_BOARD pico2_w CACHE STRING "Board type")
+set(ENV{PICO_SDK_PATH} "/Users/bsquared/pico/pico-sdk")
+set(ENV{WOLFSSL_ROOT} "/Users/bsquared/bwsi/pico/wolfssl")
+set(ENV{PICO_PLATFORM} "rp2350")
 
 # Random ChatGPT fix for following error: `Policy CMP0057 is not set: Support new IN_LIST if() operator`
-# must be before pico_sdk_import.cmake is included
+# These lines must be before pico_sdk_import.cmake is included
 if(POLICY CMP0057)
     cmake_policy(SET CMP0057 NEW)
 endif()
@@ -115,13 +118,15 @@ option(USE_UART "Output over UART instead of USB" OFF)
         message(STATUS "We are using USB!")
     endif()
 
-    if (${PICO_PLATFORM} STREQUAL "rp2350")
+    if (${PICO_PLATFORM} STREQUAL "rp2350" OR ${PICO_PLATFORM} STREQUAL "rp2350-arm-s")
         add_compile_definitions(wolfssl WOLFSSL_SP_ARM_CORTEX_M_ASM)
         message(STATUS "We are using rp2350!")
     elseif (${PICO_PLATFORM} STREQUAL "rp2350-riscv")
         add_compile_definitions(wolfSSL WOLFSSL_SP_RISCV32)
+        message(STATUS "We are using risc!")
     else()
         add_compile_definitions(wolfssl WOLFSSL_SP_ARM_THUMB_ASM)
+        message(STATUS "We are using thumb!")
     endif()
 
     pico_add_extra_outputs(testwolfcrypt)
