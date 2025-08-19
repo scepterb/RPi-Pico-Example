@@ -19,6 +19,7 @@ set(PICO_BOARD pico2_w CACHE STRING "Board type")
 # and it will build successfully
 set(ENV{PICO_SDK_PATH} "/Users/bsquared/pico/pico-sdk")
 set(ENV{WOLFSSL_ROOT} "/Users/bsquared/bwsi/pico/wolfssl")
+
 set(ENV{PICO_PLATFORM} "rp2350")
 
 # This make CMake export a compile_commands.json file to your build folder
