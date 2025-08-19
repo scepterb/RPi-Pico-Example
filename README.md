@@ -88,9 +88,20 @@ If all tests pass, the Pico will output "End: 0".
 
 You can use your CMakeLists.txt to tell VSCode's IntelliSense what your include paths are. 
 
-For example, in `${WOLFSSL_ROOT}/wolfcrypt/src/random.c`, you might notice that VSCode can not resolve the `#include <pico/rand.h>` line. To remedy this, I have a line in CMakeLists that exports a `compile_commands.json` file, which can then be inputted into your `c_cpp_properties.json` file to create an include path. 
+For example, in `${WOLFSSL_ROOT}/wolfcrypt/src/random.c`, you might notice that VSCode can not resolve the `#include <pico/rand.h>` line. To remedy this, I added a line to CMakeLists that will export a `compile_commands.json` file: `set(CMAKE_EXPORT_COMPILE_COMMANDS ON)`.
 
-Read my comment explaining this in CMakeLists.txt for more info.
+This file can then be inputted into your `.vscode/c_cpp_properties.json` file using a custom configuration. By doing this, VSCode IntelliSense will use that `compile_commands.json` to find files for your include statements.
+```
+{
+    "configurations": [
+        {
+            "name": "CMake",
+            "compileCommands": "${config:cmake.buildDirectory}/compile_commands.json"
+        }
+    ],
+    "version": 4
+}
+```
 
 ## Appendix B: Additional resources
 
