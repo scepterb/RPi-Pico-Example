@@ -9,9 +9,9 @@ somewhere on your system. You also need the ARM compiler (gcc-arm-none-eabi) and
 
 ## Setup
 
-#### 1. Set you env variables to your wolfSSL and pico-sdk directories.
+#### 1. Set your env variables to your wolfSSL and pico-sdk directories.
 
-In the original project, you'd do this by typing something like `export WOLFSSL_ROOT=/path/to/wolfssl/source` in your terminal. However, that means CMake will only function when ran in that terminal session. Instead, just update the two lines at the top of your `CMakeLists.txt` with the appropriate paths
+In the original project, you'd do this by typing something like `export WOLFSSL_ROOT=/path/to/wolfssl/source` in your terminal. I found that it's cleaner to set these in `CMakeLists.txt` instead; just update the two lines at the top of CMakeLists with the appropriate paths:
 ```
 set(ENV{PICO_SDK_PATH} "/Users/bsquared/pico/pico-sdk")
 set(ENV{WOLFSSL_ROOT} "/Users/bsquared/bwsi/pico/wolfssl")
@@ -121,7 +121,7 @@ target_link_libraries(bootloader
 )
 
 # Include WolfSSL in include path
-target_include_directories(testwolfcrypt PRIVATE ${WOLFSSL_ROOT})
+target_include_directories(bootloader PRIVATE ${WOLFSSL_ROOT})
 ```
 
 Now, in your `bootloader.c`, you can import WolfSSL modules like normal!
