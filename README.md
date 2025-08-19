@@ -58,8 +58,11 @@ If all tests pass, the Pico will output "End: 0".
 
 ## Appendix A: Intellisense include paths
 
-You can use your CMakeLists.txt. to tell VSCode's IntelliSense what your include paths are. 
-For example, in `${WOLFSSL_ROOT}/wolfcrypt/src/random.c`, you might notice that VSCode can not resolve the `#include <pico/rand.h>` line. To remedy this, I have a line in CMakeLists that exports a `compile_commands.json`, which can then be inputted into your `c_cpp_properties.json` file. I have a comment explaining this in CMakeLists.txt
+You can use your CMakeLists.txt to tell VSCode's IntelliSense what your include paths are. 
+
+For example, in `${WOLFSSL_ROOT}/wolfcrypt/src/random.c`, you might notice that VSCode can not resolve the `#include <pico/rand.h>` line. To remedy this, I have a line in CMakeLists that exports a `compile_commands.json` file, which can then be inputted into your `c_cpp_properties.json` file to create an include path. 
+
+Read my comment explaining this in CMakeLists.txt for more info.
 
 ## Appendix B: Additional resources
 
@@ -99,3 +102,7 @@ Now, in your `bootloader.c`, you can import WolfSSL modules like normal!
 #include "wolfssl/wolfcrypt/aes.h"
 ...etc
 ```
+
+best of luck
+
+\- ben b
