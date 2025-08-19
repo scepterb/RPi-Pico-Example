@@ -17,7 +17,35 @@ set(ENV{PICO_SDK_PATH} "/Users/bsquared/pico/pico-sdk")
 set(ENV{WOLFSSL_ROOT} "/Users/bsquared/bwsi/pico/wolfssl")
 ```
 
-#### 2. cmake and make
+#### 2. Configure your WolfSSL library
+You must go into your WolfSSL library to define your own RNG function. In the root directory, navigate to `./wolfcrypt/src/random.c`. Add the following import to the top:
+```
+#include <pico/rand.h>
+```
+(This will resolve because of the `${PICO_SDK_PATH}/src/rp2_common/pico_rand/include` include path in CMakeLists.txt)
+
+Then add the following function around line 3710:
+```
+#elif defined(CUSTOM_RAND_GENERATE_BLOCK)
+    extern int wc_pico_rng_gen_block(byte* output, word32 sz)
+    {
+        uint64_t rand64;
+        while (sz > 0) {
+            word32 len = sizeof(rand64);
+            if (sz < len)
+                len = sz;
+            /* Get one random 64-bit int from hw RNG */
+            rand64 = get_rand_64();
+            XMEMCPY(output, &rand, len);
+            output += len;
+            sz -= len;
+        }
+
+        return 0;
+    }
+```
+
+#### 3. cmake and make
 
 To generate the buildsystem and build the project, run `cmake` and `make`:
 ```
@@ -37,7 +65,7 @@ $ make
 > * `USE_UART` - Output to UART instead of USB, for the Pi Debug Probe.
 > * `USE_WIFI`, `WIFI_SSID`, `WIFI_PASSWORD`, `TEST_TCP_SERVER_IP` are also all options, but I doubt the functionality of WiFi & TCP/IP.
 
-#### 3. Upload to the Pico
+#### 4. Upload to the Pico
 
 Hold the boot button and plug the Pico into your computer. You can then
 drag/drop a `.uf2` to the Pico. It will stop becoming a USB mass storage device
@@ -45,7 +73,7 @@ and run immediately once the upload is complete.
 
 Alternatively, use `picotool load -f <path-to-uf2>` to force the Pico into BOOTSEL mode and load the firmware.
 
-### 4. Serial output
+### 5. Serial output
 
 Because we have not set `USE_UART`, once rebooted the USB port will turn into an
 "Abstract Control Module" serial port. This means our board is visible as the familiar
