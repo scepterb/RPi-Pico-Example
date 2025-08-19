@@ -13,9 +13,22 @@ if (EXISTS ${picoVscode})
 endif()
 # ====================================================================================
 set(PICO_BOARD pico2_w CACHE STRING "Board type")
+
+# You CAN set these manually in your terminal, like the original wolfssl-examples project tells you to
+# But this way, you can build your project from the command pallete (`> CMake: Build`)
+# and it will build successfully
 set(ENV{PICO_SDK_PATH} "/Users/bsquared/pico/pico-sdk")
 set(ENV{WOLFSSL_ROOT} "/Users/bsquared/bwsi/pico/wolfssl")
 set(ENV{PICO_PLATFORM} "rp2350")
+
+# This make CMake export a compile_commands.json file to your build folder
+# compile_commands.json contains a list of all directories in your build
+# 
+# IMPORTANT: VSCode IntelliSense can use this list to find files for your include statements
+# Just create a configuration with the line 
+# "compileCommands": "${config:cmake.buildDirectory}/compile_commands.json"
+# in your c_cpp_properties.json file
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Random ChatGPT fix for following error: `Policy CMP0057 is not set: Support new IN_LIST if() operator`
 # These lines must be before pico_sdk_import.cmake is included
@@ -23,7 +36,7 @@ if(POLICY CMP0057)
     cmake_policy(SET CMP0057 NEW)
 endif()
 
-# Pull in Pico and FreeRTOS
+# Pull in Pico SDK
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 if(PICO_SDK_VERSION_STRING VERSION_LESS "1.3.0")
@@ -87,6 +100,11 @@ option(USE_UART "Output over UART instead of USB" OFF)
     else()
         add_compile_definitions(wolfssl WOLFSSL_SP_ARM_THUMB_ASM)
     endif()
+
+    ## Define constants used by wc_pico_rng_gen_block in ${WOLFSSL_ROOT}/wolfcrypt/src/random.c
+    target_include_directories(wolfssl PRIVATE
+        ${PICO_SDK_PATH}/src/rp2_common/pico_rand/include
+    )
 
     target_link_libraries(wolfssl
         pico_stdlib

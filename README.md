@@ -3,13 +3,11 @@
 Details of the Pi Pico support in wolfSSL can be found in the
 `wolfcrypt/src/port/pi_pico/README.md`.
 
-This demonstration compiles several different utilities, including the wolfCrypt
-benchmark and test suite.
+Hi.
 
 ### Prerequisites
 
-You of course need a Pi Pico based board. Any RP2040 / RP2350 based board should
-work, as long as it has a USB port to upload firmware to.
+You of course need the Pico 2W (RP2350) board we received from Guillermo.
 
 You need to have the [Raspberry Pi Pico SDK GitHub repository](https://github.com/raspberrypi/pico-sdk)
 somewhere on your system. You also need the ARM compiler and CMake installed,
@@ -18,13 +16,6 @@ in Debian / Ubuntu you can do this using:
 ```
 sudo apt install cmake gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
 ```
-
-If you wish to use RISC-V with the RP2350 (ARM mode is default), you will need a
-`riscv32-unknown-elf-gcc` compiler. You can search for binaries for this, or
-compile the [RISC-V GNU Toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain)
-in multilib mode. You will also need to add symlinks from `riscv64-unknown-*` to
-`riscv32-unknown-elf-*` if you build the toolchain from source. This is because
-the multilib mode compiler is both 32bit and 64bit.
 
 ### 1. Set an export to the wolfSSL source directory.
 
@@ -58,7 +49,7 @@ To use the RP2350 in RISC-V mode, add `-DPICO_PLATFORM=rp2350-riscv`.
 $ cd RPi-Pico
 $ mkdir build
 $ cd build
-$ cmake -DPICO_BOARD=pico_w ..
+$ cmake -DPICO_BOARD=pico2_w -DPICO_PLATFORM=rp2350 ..
 $ make
 ```
 
@@ -66,27 +57,17 @@ $ make
 
 Hold the boot button and plug the Pico into your computer, you can then
 drag/drop a `.uf2` to the Pico. It will stop becoming a USB mass storage device
-and run immediately once the upload is complete. Alternatively, you can use
-[picotool](https://github.com/raspberrypi/picotool) to upload a file:
-
-```
-sudo picotool load benchmark.uf2
-sudo picotool reboot
-```
+and run immediately once the upload is complete.
 
 ### 5. Serial output
 
-If you have not set `USE_UART`, once rebooted the USB port will turn into an
-"Abstract Control Module" serial port. On Linux this will likely be
-`/dev/ttyACM0`, or a number higher than `0` if you already have one. On macOS
-this will be something like `/dev/cu.usbmodemXXXX`. The baud rate of this port
+Because we have not set `USE_UART`, once rebooted the USB port will turn into an
+"Abstract Control Module" serial port. This means our board is visible as the familiar
+`/dev/ttyACM0` or `/dev/tty.usbmodemXXXX`. The baud rate of this port
 is 115200.
 
-In Linux, most repositories have `minicom`. Install this using your package
-manager and run:
+Either use `minicom` (`minicom -b 115200 -o -D /dev/ttyACM0`) or VSCode's built-in serial monitor to communicate with the board.
 
-```
-minicom -b 115200 -o -D /dev/ttyACM0
-```
+## Appendix A: Intellisense include paths
 
-If you need to exit at any time, it is CTRL-A followed by CTRL-X.
+[placeholder]

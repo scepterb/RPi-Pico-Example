@@ -436,7 +436,7 @@ unsigned long get_rand_32(void);
 #define CUSTOM_RAND_GENERATE get_rand_32
 #endif
 
-#if 1
+#if 0
 /* Use built-in P-RNG (SHA256 based) with HW RNG */
 /* P-RNG + HW RNG (P-RNG is ~8K) */
 #undef HAVE_HASHDRBG
@@ -447,9 +447,9 @@ unsigned long get_rand_32(void);
 #endif
 
 
-#if 0
+#if 1
 /* Bypass P-RNG and use only HW RNG */
-//extern int my_rng_gen_block(unsigned char *output, unsigned int sz);
+extern int wc_pico_rng_gen_block(unsigned char *output, unsigned int sz);
 #undef CUSTOM_RAND_GENERATE_BLOCK
 #define CUSTOM_RAND_GENERATE_BLOCK wc_pico_rng_gen_block
 #endif
