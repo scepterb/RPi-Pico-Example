@@ -1,30 +1,9 @@
-# user sensitive config files
-**/my_private_config.h
-
-# Android files
-android/wolfcryptjni-ndk-gradle/.gradle
-android/wolfcryptjni-ndk-gradle/.idea
-android/wolfcryptjni-ndk-gradle/local.properties
-android/wolfcryptjni-ndk-gradle/app/.externalNativeBuild
-android/wolfcryptjni-ndk-gradle/app/build
-android/wolfssljni-ndk-gradle/.gradle
-android/wolfssljni-ndk-gradle/.idea
-android/wolfssljni-ndk-gradle/local.properties
-android/wolfssljni-ndk-gradle/app/.externalNativeBuild
-android/wolfssljni-ndk-gradle/app/build
-android/wolfssljni-ndk-sample/bin
-android/wolfssljni-ndk-sample/build.xml
-android/wolfssljni-ndk-sample/gen
-android/wolfssljni-ndk-sample/local.properties
-android/wolfssljni-ndk-sample/obj
-android/wolfssljni-ndk-sample/proguard-project.txt
-
 # EDP-IDF
 **/main/build/CMakeFiles/*
 **/build/*
 
-# VisualGDB
-**/.visualgdb
+# VSCode
+.vscode/
 
 # auto-created CMake backups
 **/CMakeLists.txt.old
