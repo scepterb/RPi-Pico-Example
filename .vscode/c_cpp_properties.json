@@ -1,9 +1,0 @@
-{
-    "configurations": [
-        {
-            "name": "CMake",
-            "compileCommands": "${config:cmake.buildDirectory}/compile_commands.json"
-        }
-    ],
-    "version": 4
-}
