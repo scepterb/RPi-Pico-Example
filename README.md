@@ -73,7 +73,7 @@ and run immediately once the upload is complete.
 
 Alternatively, use `picotool load -f <path-to-uf2>` to force the Pico into BOOTSEL mode and load the firmware.
 
-### 5. Serial output
+#### 5. Serial output
 
 Because we have not set `USE_UART`, once rebooted the USB port will turn into an
 "Abstract Control Module" serial port. This means our board is visible as the familiar
