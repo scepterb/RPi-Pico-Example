@@ -13,8 +13,8 @@ somewhere on your system. You also need the ARM compiler (gcc-arm-none-eabi) and
 
 In the original project, you'd do this by typing something like `export WOLFSSL_ROOT=/path/to/wolfssl/source` in your terminal. I found that it's cleaner to set these in `CMakeLists.txt` instead; just update the two lines at the top of CMakeLists with the appropriate paths:
 ```
-set(ENV{PICO_SDK_PATH} "/Users/bsquared/pico/pico-sdk")
-set(ENV{WOLFSSL_ROOT} "/Users/bsquared/bwsi/pico/wolfssl")
+set(ENV{PICO_SDK_PATH} "/Users/scepterb/pico/pico-sdk")
+set(ENV{WOLFSSL_ROOT} "/Users/scepterb/bwsi/pico/wolfssl")
 ```
 
 #### 2. Configure your WolfSSL library
