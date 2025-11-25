@@ -1,11 +1,11 @@
 ## What is this?
 
-I created this repository as a basic example of how to get WolfSSL working on the Raspberry Pi Pico. This project can be built either from the CLI, as described in step 3, or with the VSCode RPi Pico extension. The resulting `testwolfcrypt` binary will test wolfcrypt's functionality (shocking) and output the return value over USB UART.
+I created this repository as a basic example of how to get WolfSSL working on the Raspberry Pi Pico. This project can be built either from the CLI, as described in step 3, or with the VSCode RPi Pico extension. After building, you'll be left with a `testwolfcrypt` binary that will test wolfcrypt's functionality and output the return value over USB UART.
 
 ### Prerequisites
 
 You need to have the [Raspberry Pi Pico SDK GitHub repository](https://github.com/raspberrypi/pico-sdk) and the [WolfSSL Github Repository](https://github.com/wolfSSL/wolfssl)
-somewhere on your system. You also need the ARM compiler (gcc-arm-none-eabi) and CMake installed. I mean, it would be pretty impressive if you haven't had those installed at this point.
+somewhere on your system. You also need the ARM compiler (gcc-arm-none-eabi) and CMake installed. (You should already have those installed if you went to Beaver Works.)
 
 ## Setup
 
@@ -77,8 +77,7 @@ Alternatively, use `picotool load -f <path-to-uf2>` to force the Pico into BOOTS
 
 Because we have not set `USE_UART`, once rebooted the USB port will turn into an
 "Abstract Control Module" serial port. This means our board is visible as the familiar
-`/dev/ttyACM0` or `/dev/tty.usbmodemXXXX`. The baud rate of this port
-is 115200.
+`/dev/ttyACM0` or `/dev/tty.usbmodemXXXX`. The baud rate of this port is 115200.
 
 Either use `minicom` (`minicom -b 115200 -o -D /dev/tty...`) or VSCode's built-in serial monitor to communicate with the board.
 
@@ -86,11 +85,10 @@ If all tests pass, the Pico will output "End: 0".
 
 ## Appendix A: Intellisense include paths
 
-You can use your CMakeLists.txt to tell VSCode's IntelliSense what your include paths are. 
+VSCode's IntelliSense will not automatically detect your include paths. For example, IntelliSense can not resolve the `#include <pico/rand.h>` line in `${WOLFSSL_ROOT}/wolfcrypt/src/random.c`. 
 
-For example, in `${WOLFSSL_ROOT}/wolfcrypt/src/random.c`, you might notice that VSCode can not resolve the `#include <pico/rand.h>` line. To remedy this, I added a line to CMakeLists that will export a `compile_commands.json` file: `set(CMAKE_EXPORT_COMPILE_COMMANDS ON)`.
+To remedy this, we'll modify CMake's build process slightly. By adding the line `set(CMAKE_EXPORT_COMPILE_COMMANDS ON)` to CMakeLists.txt, Cmake will create a file on build that specifies include path. This file, `compile_commands.json`, can then be inputted into `.vscode/c_cpp_properties.json` file using a custom VSCode configuration. By doing this, VSCode IntelliSense will use that `compile_commands.json` to set include paths.
 
-This file can then be inputted into your `.vscode/c_cpp_properties.json` file using a custom configuration. By doing this, VSCode IntelliSense will use that `compile_commands.json` to find files for your include statements.
 ```
 {
     "configurations": [
@@ -105,11 +103,11 @@ This file can then be inputted into your `.vscode/c_cpp_properties.json` file us
 
 ## Appendix B: Additional resources
 
-Surprisingly, WolfSSL does include a bit of documentation about using the library on the Pico. This can be found in your WolfSSL directory, at `wolfcrypt/src/port/pi_pico/README.md`.
+Surprisingly, the WolfSSL library includes some documentation regarding the RasPi Pico. You can find this in your project's WolfSSL directory at `wolfcrypt/src/port/pi_pico/README.md`.
 
 ## Appendix C: Using WolfSSL in your own scripts
 
-Let's say you have this `bootloader.c` script from the attack phase that has the following WolfSSL imports:
+Let's say you have this `bootloader.c` script that has the following WolfSSL imports:
 ```
 // Cryptography Imports
 #include "wolfssl/wolfcrypt/settings.h"
